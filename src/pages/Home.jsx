@@ -1,11 +1,10 @@
-import Header from "../components/Header";
 import Lander from "../components/Lander";
+import Chat from "../components/Chat";
 
 const Home = ({ user, isAuthenticated }) => {
   return (
     <>
-      <Header />
-      {isAuthenticated ? null : <Lander />}
+      {isAuthenticated ? <Chat user={user}/> : <Lander />}
     </>
   );
 };
