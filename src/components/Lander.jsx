@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
+import Header from "./Header";
 
 const Lander = () => {
   return (
     <>
       <Header />
-      <main>
-        <h2>Welcome to OdinChat</h2>
-        <section>
-          <h3>A Fast, Simple, and Secure Way to Stay Connected</h3>
+      <main className="flex flex-col p-4 text-lg sm:px-16 xl:px-32">
+        <section className="mb-4">
+          <h2 className="mb-2 text-2xl font-bold sm:text-3xl">Welcome to OdinChat!</h2>
           <p>
             <b>OdinChat</b> is a modern real-time messaging app designed to make
             conversations effortless and enjoyable. Whether you're catching up
@@ -15,27 +15,29 @@ const Lander = () => {
             OdinChat keeps you connected—anytime, anywhere.
           </p>
         </section>
-        <section>
-          <h3>🚀 Features</h3>
-          <ul>
-            <li>🔒 Secure authentication and user accounts</li>
-            <li>💬 Real-time messaging powered by WebSockets</li>
-            <li>👥 Private and group chat support</li>
-            <li>🌙 Light and dark mode themes</li>
-            <li>📱 Fully responsive design for all devices</li>
-            <li>⚙️ Built with modern web technologies</li>
+        <section className="mb-4">
+          <h3 className="mb-2 text-xl font-bold sm:text-2xl">Key Features</h3>
+          <ul className="list-inside list-disc ml-4">
+            <li>Secure authentication and user accounts</li>
+            <li>Real-time messaging powered by WebSockets</li>
+            <li>Private and group chat support</li>
+            <li>Light and dark mode themes</li>
+            <li>Fully responsive design for all devices</li>
+            <li>Built with modern web technologies</li>
           </ul>
         </section>
-        <section>
-          <h3>Get Started</h3>
-          <p>Create an account and jump into the conversation in seconds!</p>
-          <Link to="/sign-up">Get Started</Link>
-        </section>
-        <section>
-          <h3>
-            💡 Built with passion to make staying connected simple and
-            enjoyable.
-          </h3>
+        <section className="mb-3">
+          <h3 className="mb-2 text-xl font-bold sm:text-2xl">Get Started Today</h3>
+
+          <p className="mb-6">
+            Create an account and jump into the conversation in seconds!
+          </p>
+          <Link
+            to="/sign-up"
+            className="rounded-sm bg-sky-500 p-4 text-white hover:bg-sky-600"
+          >
+            Get Started ➜
+          </Link>
         </section>
       </main>
     </>
