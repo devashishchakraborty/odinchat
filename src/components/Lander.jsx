@@ -5,9 +5,9 @@ const Lander = () => {
   return (
     <>
       <Header />
-      <main className="flex flex-col p-4 text-lg sm:px-16 xl:px-32">
+      <main className="flex flex-col p-4 text-lg sm:text-xl sm:px-16 xl:px-32">
         <section className="mb-4">
-          <h2 className="mb-2 text-2xl font-bold sm:text-3xl">Welcome to OdinChat!</h2>
+          <h2 className="mb-2 text-2xl font-bold sm:text-4xl">Welcome to OdinChat!</h2>
           <p>
             <b>OdinChat</b> is a modern real-time messaging app designed to make
             conversations effortless and enjoyable. Whether you're catching up
@@ -16,7 +16,7 @@ const Lander = () => {
           </p>
         </section>
         <section className="mb-4">
-          <h3 className="mb-2 text-xl font-bold sm:text-2xl">Key Features</h3>
+          <h3 className="mb-2 text-xl font-bold sm:text-3xl">Key Features</h3>
           <ul className="list-inside list-disc ml-4">
             <li>Secure authentication and user accounts</li>
             <li>Real-time messaging powered by WebSockets</li>
@@ -27,7 +27,7 @@ const Lander = () => {
           </ul>
         </section>
         <section className="mb-3">
-          <h3 className="mb-2 text-xl font-bold sm:text-2xl">Get Started Today</h3>
+          <h3 className="mb-2 text-xl font-bold sm:text-3xl">Get Started Today</h3>
 
           <p className="mb-6">
             Create an account and jump into the conversation in seconds!

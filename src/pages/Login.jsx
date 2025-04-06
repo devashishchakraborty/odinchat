@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Header from "../components/Header";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 
 const Login = () => {
@@ -48,11 +48,15 @@ const Login = () => {
   return (
     <>
       <Header />
-      <main>
-        <section className="">
-          <h1>Sign in</h1>
-          <form onSubmit={handleLogin}>
+      <main className="flex flex-col p-4 text-lg sm:px-16 xl:px-32">
+        <section className="flex flex-col items-center">
+          <h1 className="mb-2 text-2xl font-bold sm:text-4xl">Sign in</h1>
+          <form
+            onSubmit={handleLogin}
+            className="relative flex min-w-3/4 flex-col gap-4 sm:max-w-xl sm:min-w-lg"
+          >
             <input
+              className="rounded-sm border-2 border-gray-300 p-4 outline-sky-600"
               type="text"
               name="email"
               placeholder="Email"
@@ -65,6 +69,7 @@ const Login = () => {
               required
             />
             <input
+              className="rounded-sm border-2 border-gray-300 p-4 outline-sky-600"
               type="password"
               name="password"
               placeholder="Password"
@@ -76,14 +81,22 @@ const Login = () => {
               }
               required
             />
-            <button type="submit" disabled={isSubmitting}>
+            <button
+              type="submit"
+              className="cursor-pointer rounded-sm bg-sky-500 p-4 text-white hover:bg-sky-600"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? <Loading /> : "Login"}
             </button>
             <div>
-              Don't have an account? <Link to="/sign-up">Sign Up</Link>
-              <br />
-              <div>{loginError}</div>
+              Don't have an account?{" "}
+              <Link className="text-sky-600 hover:underline" to="/sign-up">
+                Sign Up
+              </Link>
             </div>
+            <small>
+              <i>{loginError}</i>
+            </small>
           </form>
         </section>
       </main>
