@@ -33,6 +33,13 @@ const Chat = ({ user }) => {
 
     fetchUsers();
   }, []);
+  if (error)
+    return (
+      <main>
+        <section>{error}</section>
+      </main>
+    );
+    
   return (
     <main>
       <section className="flex flex-col">
