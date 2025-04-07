@@ -6,14 +6,14 @@ import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import "./App.css";
 import { useEffect, useState } from "react";
+import Chat from "./pages/Chat";
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
     if (token) {
       try {
         const decoded = jwtDecode(token, { header: true });
@@ -22,31 +22,35 @@ function App() {
         const isExpired = decoded.exp && Date.now() >= decoded.exp * 1000;
 
         if (!isExpired) {
-          setUser({
-            id: decoded.id,
-            name: decoded.name,
-            email: decoded.email,
-          });
+          setUser(decoded);
           setIsAuthenticated(true);
+          localStorage.setItem("token", token);
         } else {
+          setToken(null);
           localStorage.removeItem("token");
         }
       } catch (error) {
         console.error("Token decoding failed:", error);
       }
     }
-  }, []);
+  }, [token]);
 
   return (
     <>
       <Routes>
         <Route
           path="/"
-          element={<Home user={user} isAuthenticated={isAuthenticated} />}
+          element={isAuthenticated && user ? <Chat user={user}/> : <Home/>}
         />
         <Route
           path="/login"
-          element={isAuthenticated ? <Navigate to="/" /> : <Login />}
+          element={
+            isAuthenticated ? (
+              <Navigate to="/" />
+            ) : (
+              <Login setToken={setToken} />
+            )
+          }
         />
         <Route
           path="/sign-up"

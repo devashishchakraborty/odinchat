@@ -4,7 +4,7 @@ import MdiChat from "../assets/MdiChat";
 const Header = () => {
   return (
     <>
-      <header className="border-b-1 border-b-gray-200 p-4 sm:px-16 xl:px-32 mb-4">
+      <header className="border-b-2 border-b-gray-200 p-4 sm:px-16 xl:px-32 mb-4">
         <nav className="flex flex-wrap justify-between gap-2">
           <ul>
             <li className="text-3xl font-bold text-sky-500 sm:text-4xl">

@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 
-const Login = () => {
+const Login = ({ setToken }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userLogin, setUserLogin] = useState({
     email: "",
@@ -35,7 +35,7 @@ const Login = () => {
         );
       }
       const data = await response.json();
-      localStorage.setItem("token", data.token);
+      setToken(data.token);
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -50,13 +50,13 @@ const Login = () => {
       <Header />
       <main className="flex flex-col p-4 text-lg sm:px-16 xl:px-32">
         <section className="flex flex-col items-center">
-          <h1 className="mb-2 text-2xl font-bold sm:text-4xl">Sign in</h1>
+          <h1 className="mb-4 text-2xl font-bold sm:text-4xl">Sign in</h1>
           <form
             onSubmit={handleLogin}
             className="relative flex min-w-3/4 flex-col gap-4 sm:max-w-xl sm:min-w-lg"
           >
             <input
-              className="rounded-sm border-2 border-gray-300 p-4 outline-sky-600"
+              className="rounded-sm border-2 border-gray-300 bg-gray-50 p-3 outline-sky-600 focus:bg-white sm:p-4"
               type="text"
               name="email"
               placeholder="Email"
@@ -69,7 +69,7 @@ const Login = () => {
               required
             />
             <input
-              className="rounded-sm border-2 border-gray-300 p-4 outline-sky-600"
+              className="rounded-sm border-2 border-gray-300 bg-gray-50 p-3 outline-sky-600 focus:bg-white sm:p-4"
               type="password"
               name="password"
               placeholder="Password"
@@ -83,7 +83,7 @@ const Login = () => {
             />
             <button
               type="submit"
-              className="cursor-pointer rounded-sm bg-sky-500 p-4 text-white hover:bg-sky-600"
+              className="flex cursor-pointer justify-center rounded-sm bg-sky-500 p-4 text-white hover:bg-sky-600"
               disabled={isSubmitting}
             >
               {isSubmitting ? <Loading /> : "Login"}
