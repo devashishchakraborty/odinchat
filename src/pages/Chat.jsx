@@ -7,7 +7,7 @@ import MdiMenu from "../assets/MdiMenu";
 const Chat = ({ user }) => {
   const [users, setUsers] = useState(null);
   const [error, setError] = useState(null);
-  const [currentTexterId, setCurrentTexterId] = useState(null);
+  const [currentTexter, setCurrentTexter] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -35,16 +35,18 @@ const Chat = ({ user }) => {
 
     fetchUsers();
   }, []);
-  if (error)
+
+  if (error) {
     return (
       <main>
         <section>{error}</section>
       </main>
     );
+  }
 
   return (
-    <main className="flex w-full min-w-xs">
-      <section className="flex w-full flex-col">
+    <main className="flex h-full w-full min-w-xs">
+      <section className="flex h-full w-full flex-col sm:w-sm sm:border-r-2 sm:border-r-gray-200">
         <section className="flex items-center gap-4 border-b-2 border-b-gray-200 p-3">
           <div className="cursor-pointer rounded-full p-2 text-2xl text-gray-600 hover:bg-gray-200">
             <MdiMenu />
@@ -52,7 +54,7 @@ const Chat = ({ user }) => {
           <input
             type="text"
             placeholder="Search"
-            className="text-md w-full rounded-full bg-gray-200 px-4 py-2 outline-2 outline-gray-200 focus:bg-white sm:p-4"
+            className="text-md w-full rounded-full bg-gray-200 px-4 py-1 outline-2 outline-gray-200 focus:bg-white"
           />
         </section>
         <section className="flex flex-col">
@@ -62,8 +64,12 @@ const Chat = ({ user }) => {
                 <section
                   className="flex cursor-pointer items-center gap-4 border-b-2 border-b-gray-200 px-4 py-2 hover:bg-gray-200"
                   key={texter.id}
+                  onClick={() => setCurrentTexter(texter)}
+                  style={{
+                    backgroundColor: currentTexter.id == texter.id && "#54aad1",
+                  }}
                 >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-linear-to-b from-sky-400 to-sky-600 text-xl font-bold text-white">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-linear-to-b from-green-400 to-green-600 text-xl font-bold text-white select-none">
                     {texter.name
                       .split(" ")
                       .map(
@@ -71,8 +77,18 @@ const Chat = ({ user }) => {
                       )}
                   </div>
                   <div className="flex flex-col">
-                    <div className="font-bold">{texter.name}</div>
-                    <div className="text-gray-500">Last Message...</div>
+                    <div
+                      className="font-bold"
+                      style={{ color: currentTexter.id == texter.id && "white" }}
+                    >
+                      {texter.name}
+                    </div>
+                    <div
+                      className="text-gray-500"
+                      style={{ color: currentTexter.id == texter.id && "white" }}
+                    >
+                      Last Message...
+                    </div>
                   </div>
                 </section>
               );
@@ -84,7 +100,7 @@ const Chat = ({ user }) => {
           )}
         </section>
       </section>
-      <Messages currentTexterId={currentTexterId} />
+      <Messages currentTexter={currentTexter} />
     </main>
   );
 };
