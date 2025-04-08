@@ -45,8 +45,8 @@ const Chat = ({ user }) => {
   }
 
   return (
-    <main className="flex h-full w-full min-w-xs">
-      <section className="flex h-full w-full flex-col sm:w-sm sm:border-r-2 sm:border-r-gray-200">
+    <main className="flex h-full w-full">
+      <section className="flex h-full min-w-xs w-full sm:w-sm flex-col sm:border-r-2 sm:border-r-gray-200">
         <section className="flex items-center gap-4 border-b-2 border-b-gray-200 p-3">
           <div className="cursor-pointer rounded-full p-2 text-2xl text-gray-600 hover:bg-gray-200">
             <MdiMenu />
@@ -66,7 +66,8 @@ const Chat = ({ user }) => {
                   key={texter.id}
                   onClick={() => setCurrentTexter(texter)}
                   style={{
-                    backgroundColor: currentTexter.id == texter.id && "#54aad1",
+                    backgroundColor:
+                      currentTexter?.id == texter.id && "#54aad1",
                   }}
                 >
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-linear-to-b from-green-400 to-green-600 text-xl font-bold text-white select-none">
@@ -79,13 +80,17 @@ const Chat = ({ user }) => {
                   <div className="flex flex-col">
                     <div
                       className="font-bold"
-                      style={{ color: currentTexter.id == texter.id && "white" }}
+                      style={{
+                        color: currentTexter?.id == texter.id && "white",
+                      }}
                     >
                       {texter.name}
                     </div>
                     <div
                       className="text-gray-500"
-                      style={{ color: currentTexter.id == texter.id && "white" }}
+                      style={{
+                        color: currentTexter?.id == texter.id && "white",
+                      }}
                     >
                       Last Message...
                     </div>
