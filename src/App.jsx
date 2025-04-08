@@ -7,11 +7,11 @@ import Home from "./pages/Home";
 import "./App.css";
 import { useEffect, useState } from "react";
 import Chat from "./pages/Chat";
+import PageLoader from "./components/PageLoader";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -23,7 +23,6 @@ function App() {
 
         if (!isExpired) {
           setUser(decoded);
-          setIsAuthenticated(true);
           localStorage.setItem("token", token);
         } else {
           setToken(null);
@@ -40,21 +39,15 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={isAuthenticated && user ? <Chat user={user}/> : <Home/>}
+          element={token ? user ? <Chat user={user} /> : <PageLoader /> : <Home />}
         />
         <Route
           path="/login"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/" />
-            ) : (
-              <Login setToken={setToken} />
-            )
-          }
+          element={user ? <Navigate to="/" /> : <Login setToken={setToken} />}
         />
         <Route
           path="/sign-up"
-          element={isAuthenticated ? <Navigate to="/" /> : <Signup />}
+          element={user ? <Navigate to="/" /> : <Signup />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
