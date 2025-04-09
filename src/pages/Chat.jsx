@@ -5,7 +5,7 @@ import Messages from "../components/Messages";
 import MdiMenu from "../assets/MdiMenu";
 
 const Chat = ({ user }) => {
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [currentTexter, setCurrentTexter] = useState(null);
 
@@ -46,8 +46,8 @@ const Chat = ({ user }) => {
 
   return (
     <main className="flex h-full w-full">
-      <section className="flex h-full min-w-xs w-full sm:w-sm flex-col sm:border-r-2 sm:border-r-gray-200">
-        <section className="flex items-center gap-4 border-b-2 border-b-gray-200 p-3">
+      <section className="flex h-full w-full min-w-xs flex-col sm:w-sm sm:border-r-2 sm:border-r-gray-200">
+        <section className="flex h-16 items-center gap-4 border-b-2 border-b-gray-200 p-2 pr-4">
           <div className="cursor-pointer rounded-full p-2 text-2xl text-gray-600 hover:bg-gray-200">
             <MdiMenu />
           </div>
@@ -58,7 +58,7 @@ const Chat = ({ user }) => {
           />
         </section>
         <section className="flex flex-col">
-          {users ? (
+          {users.length > 0 ? (
             users.map((texter) => {
               return (
                 <section
@@ -92,7 +92,9 @@ const Chat = ({ user }) => {
                         color: currentTexter?.id == texter.id && "white",
                       }}
                     >
-                      Last Message...
+                      {texter.latestMessage.author_id === texter.id
+                        ? texter.latestMessage.text
+                        : "You: " + texter.latestMessage.text}
                     </div>
                   </div>
                 </section>

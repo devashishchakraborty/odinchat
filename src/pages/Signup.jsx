@@ -133,7 +133,7 @@ const SignUp = () => {
               </Link>
             </div>
             <small>
-              <i>{emailError}</i>
+              <i className="text-red-700">{emailError}</i>
             </small>
           </form>
         </section>

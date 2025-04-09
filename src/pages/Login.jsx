@@ -95,7 +95,7 @@ const Login = ({ setToken }) => {
               </Link>
             </div>
             <small>
-              <i>{loginError}</i>
+              <i className="text-red-700">{loginError}</i>
             </small>
           </form>
         </section>
