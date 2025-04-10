@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
     if (token) {
       try {
-        const decoded = jwtDecode(token, { header: true });
+        const decoded = jwtDecode(token);
 
         // Check if token is expired
         const isExpired = decoded.exp && Date.now() >= decoded.exp * 1000;
