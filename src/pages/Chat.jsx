@@ -92,9 +92,11 @@ const Chat = ({ user }) => {
                         color: currentTexter?.id == texter.id && "white",
                       }}
                     >
-                      {texter.latestMessage.author_id === texter.id
-                        ? texter.latestMessage.text
-                        : "You: " + texter.latestMessage.text}
+                      {texter.latestMessage
+                        ? texter.latestMessage.author_id === texter.id
+                          ? texter.latestMessage.text
+                          : "You: " + texter.latestMessage.text
+                        : "Start a new chat!"}
                     </div>
                   </div>
                 </section>
@@ -107,7 +109,7 @@ const Chat = ({ user }) => {
           )}
         </section>
       </section>
-      <Messages currentTexter={currentTexter} />
+      <Messages currentTexter={currentTexter} user={user} />
     </main>
   );
 };

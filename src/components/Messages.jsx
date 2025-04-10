@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MdiSend from "../assets/MdiSend";
+import Loading from "./Loading";
 
-const Messages = ({ currentTexter }) => {
+const Messages = ({ currentTexter, user }) => {
   const [messages, setMessages] = useState(null);
   const [error, setError] = useState(null);
   const [newMessage, setNewMessage] = useState("");
@@ -26,7 +27,7 @@ const Messages = ({ currentTexter }) => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        setMessages((prev) => [...prev, data]);
+        setMessages((prev) => [data, ...prev]);
         setNewMessage("");
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -74,18 +75,31 @@ const Messages = ({ currentTexter }) => {
             <div className="text-sm text-gray-500">{currentTexter.email}</div>
           </section>
 
-          <section className="flex-1">
-            {messages &&
+          <section className="flex flex-1 flex-col-reverse gap-2 overflow-auto p-4">
+            {messages ? (
               messages.length > 0 &&
               messages.map((message) => {
-                return (
-                  <div key={message.id}>
-                    {message.author_id === currentTexter.id
-                      ? currentTexter.name + ": " + message.text
-                      : "You: " + message.text}
+                return message.author_id === user.id ? (
+                  <div
+                    key={message.id}
+                    className="self-end rounded-xl rounded-br-none bg-green-200 px-3 py-2 whitespace-pre-wrap"
+                  >
+                    {message.text}
+                  </div>
+                ) : (
+                  <div
+                    key={message.id}
+                    className="self-start rounded-xl rounded-bl-none bg-gray-200 px-3 py-2 whitespace-pre-wrap"
+                  >
+                    {message.text}
                   </div>
                 );
-              })}
+              })
+            ) : (
+              <div className="self-center">
+                <Loading />
+              </div>
+            )}
             {error}
           </section>
 
