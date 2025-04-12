@@ -2,39 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MdiSend from "../assets/MdiSend";
 import Loading from "./Loading";
+import socket from "../socket";
 
 const Messages = ({ currentTexter, user }) => {
   const [messages, setMessages] = useState(null);
   const [error, setError] = useState(null);
   const [newMessage, setNewMessage] = useState("");
-
-  const handleMessageSubmit = async (e) => {
-    e.preventDefault();
-    if (newMessage.length > 0) {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/messages/texter/${currentTexter.id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: JSON.stringify({ text: newMessage }),
-          },
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setMessages((prev) => [data, ...prev]);
-        setNewMessage("");
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError(err.message);
-      }
-    }
-  };
 
   useEffect(() => {
     if (currentTexter) {
@@ -60,10 +33,65 @@ const Messages = ({ currentTexter, user }) => {
           setError(err.message);
         }
       };
-
       fetchMessages();
+
+      socket.emit("join room", {
+        senderId: user.id,
+        receiverId: currentTexter.id,
+      });
+
+      socket.on("receive message", (data) => {
+        setMessages((prev) => [data, ...prev]);
+      });
+
+      socket.on("connect_error", (err) => {
+        console.error("Auth failed:", err.message);
+      });
+
+      return () => socket.off("receive message");
     }
-  }, [currentTexter]);
+  }, [user, currentTexter]);
+
+  const handleMessageSubmit = async (e) => {
+    e.preventDefault();
+    if (newMessage.length > 0) {
+      socket.emit("send message", {
+        authorId: user.id,
+        receiverId: currentTexter.id,
+        text: newMessage,
+      });
+      setNewMessage("");
+    }
+  };
+
+  // const handleMessageSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (newMessage.length > 0) {
+  //     try {
+  //       const response = await fetch(
+  //         `${import.meta.env.VITE_API_BASE_URL}/api/messages/texter/${currentTexter.id}`,
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //           },
+  //           body: JSON.stringify({ text: newMessage }),
+  //         },
+  //       );
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
+  //       const data = await response.json();
+  //       setMessages((prev) => [data, ...prev]);
+  //       setNewMessage("");
+  //     } catch (err) {
+  //       console.error("Error fetching data:", err);
+  //       setError(err.message);
+  //     }
+  //   }
+  // };
+
   return (
     <section className="hidden flex-1 sm:flex sm:flex-col">
       {currentTexter ? (
