@@ -46,7 +46,9 @@ const Chat = ({ user }) => {
 
   return (
     <main className="flex h-full w-full">
-      <section className="flex h-full w-full min-w-xs flex-col sm:w-sm sm:border-r-2 sm:border-r-gray-200">
+      <section
+        className={`${currentTexter ? "hidden" : "flex"} h-full w-full min-w-xs flex-col sm:flex sm:w-sm sm:border-r-2 sm:border-r-gray-200`}
+      >
         <section className="flex h-16 items-center gap-4 border-b-2 border-b-gray-200 p-2 pr-4">
           <div className="cursor-pointer rounded-full p-2 text-2xl text-gray-600 hover:bg-gray-200">
             <MdiMenu />
@@ -109,7 +111,12 @@ const Chat = ({ user }) => {
           )}
         </section>
       </section>
-      <Messages currentTexter={currentTexter} user={user} setUsers={setUsers}/>
+      <Messages
+        currentTexter={currentTexter}
+        user={user}
+        setUsers={setUsers}
+        setCurrentTexter={setCurrentTexter}
+      />
     </main>
   );
 };

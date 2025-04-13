@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MdiSend from "../assets/MdiSend";
 import Loading from "./Loading";
+import MdiArrowBack from "../assets/MdiArrowBack";
 import socket from "../socket";
 
-const Messages = ({ currentTexter, user, setUsers }) => {
+const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
   const [messages, setMessages] = useState(null);
   const [error, setError] = useState(null);
   const [newMessage, setNewMessage] = useState("");
@@ -56,7 +57,7 @@ const Messages = ({ currentTexter, user, setUsers }) => {
       });
 
       return () => socket.off("receive message");
-    }
+    } else setMessages(null);
   }, [user, currentTexter, setUsers]);
 
   const handleMessageSubmit = async (e) => {
@@ -71,43 +72,25 @@ const Messages = ({ currentTexter, user, setUsers }) => {
     }
   };
 
-  // const handleMessageSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (newMessage.length > 0) {
-  //     try {
-  //       const response = await fetch(
-  //         `${import.meta.env.VITE_API_BASE_URL}/api/messages/texter/${currentTexter.id}`,
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //           },
-  //           body: JSON.stringify({ text: newMessage }),
-  //         },
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! Status: ${response.status}`);
-  //       }
-  //       const data = await response.json();
-  //       setMessages((prev) => [data, ...prev]);
-  //       setNewMessage("");
-  //     } catch (err) {
-  //       console.error("Error fetching data:", err);
-  //       setError(err.message);
-  //     }
-  //   }
-  // };
-
   return (
-    <section className="hidden flex-1 sm:flex sm:flex-col">
+    <section
+      className={`${currentTexter ? "flex" : "hidden"} flex-1 flex-col sm:flex`}
+    >
       {currentTexter ? (
         <>
-          <section className="h-16 border-b-2 border-b-gray-200 px-4 py-2">
-            <div>
-              <b>{currentTexter.name}</b>
+          <section className="flex h-16 items-center gap-4 border-b-2 border-b-gray-200 px-4 py-2">
+            <div
+              className="cursor-pointer rounded-full p-2 text-xl hover:bg-gray-200 sm:hidden"
+              onClick={() => setCurrentTexter(null)}
+            >
+              <MdiArrowBack />
             </div>
-            <div className="text-sm text-gray-500">{currentTexter.email}</div>
+            <div>
+              <div>
+                <b>{currentTexter.name}</b>
+              </div>
+              <div className="text-sm text-gray-500">{currentTexter.email}</div>
+            </div>
           </section>
 
           <section className="flex flex-1 flex-col-reverse gap-2 overflow-auto p-4">
@@ -117,7 +100,7 @@ const Messages = ({ currentTexter, user, setUsers }) => {
                 return (
                   <div
                     key={message.id}
-                    className={`${message.author_id === user.id ? "self-end bg-green-200" : "self-start bg-gray-200"} rounded-xl rounded-br-none px-3 py-2 whitespace-pre-wrap`}
+                    className={`${message.author_id === user.id ? "self-end rounded-br-none bg-green-200" : "self-start rounded-bl-none bg-gray-200"} max-w-2/3 rounded-xl px-3 py-2 whitespace-pre-wrap`}
                   >
                     {message.text}
                   </div>
