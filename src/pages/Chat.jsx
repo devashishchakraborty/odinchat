@@ -109,7 +109,7 @@ const Chat = ({ user }) => {
           )}
         </section>
       </section>
-      <Messages currentTexter={currentTexter} user={user} />
+      <Messages currentTexter={currentTexter} user={user} setUsers={setUsers}/>
     </main>
   );
 };

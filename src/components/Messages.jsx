@@ -4,7 +4,7 @@ import MdiSend from "../assets/MdiSend";
 import Loading from "./Loading";
 import socket from "../socket";
 
-const Messages = ({ currentTexter, user }) => {
+const Messages = ({ currentTexter, user, setUsers }) => {
   const [messages, setMessages] = useState(null);
   const [error, setError] = useState(null);
   const [newMessage, setNewMessage] = useState("");
@@ -42,6 +42,13 @@ const Messages = ({ currentTexter, user }) => {
 
       socket.on("receive message", (data) => {
         setMessages((prev) => [data, ...prev]);
+        setUsers((prev) =>
+          prev.map((user) =>
+            user.id === currentTexter.id
+              ? { ...user, latestMessage: data }
+              : user,
+          ),
+        );
       });
 
       socket.on("connect_error", (err) => {
@@ -50,7 +57,7 @@ const Messages = ({ currentTexter, user }) => {
 
       return () => socket.off("receive message");
     }
-  }, [user, currentTexter]);
+  }, [user, currentTexter, setUsers]);
 
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
@@ -107,17 +114,10 @@ const Messages = ({ currentTexter, user }) => {
             {messages ? (
               messages.length > 0 &&
               messages.map((message) => {
-                return message.author_id === user.id ? (
+                return (
                   <div
                     key={message.id}
-                    className="self-end rounded-xl rounded-br-none bg-green-200 px-3 py-2 whitespace-pre-wrap"
-                  >
-                    {message.text}
-                  </div>
-                ) : (
-                  <div
-                    key={message.id}
-                    className="self-start rounded-xl rounded-bl-none bg-gray-200 px-3 py-2 whitespace-pre-wrap"
+                    className={`${message.author_id === user.id ? "self-end bg-green-200" : "self-start bg-gray-200"} rounded-xl rounded-br-none px-3 py-2 whitespace-pre-wrap`}
                   >
                     {message.text}
                   </div>
