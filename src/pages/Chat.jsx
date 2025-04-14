@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import Messages from "../components/Messages";
 import MdiMenu from "../assets/MdiMenu";
+import Sidebar from "../components/Sidebar";
+import { clipText } from "../utils";
 
 const Chat = ({ user }) => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [currentTexter, setCurrentTexter] = useState(null);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -45,15 +48,21 @@ const Chat = ({ user }) => {
   }
 
   return (
-    <main className="flex h-full w-full">
+    <main className="relative flex h-full w-full">
+      {showSidebar && <Sidebar user={user} setShowSidebar={setShowSidebar} />}
       <section
         className={`${currentTexter ? "hidden" : "flex"} h-full w-full min-w-xs flex-col sm:flex sm:w-sm sm:border-r-2 sm:border-r-gray-200`}
       >
         <section className="flex h-16 items-center gap-4 border-b-2 border-b-gray-200 p-2 pr-4">
-          <div className="cursor-pointer rounded-full p-2 text-2xl text-gray-600 hover:bg-gray-200">
+          <div
+            className="cursor-pointer rounded-full p-2 text-2xl text-gray-600 hover:bg-gray-200"
+            onClick={() => setShowSidebar(true)}
+          >
             <MdiMenu />
           </div>
           <input
+            id="search"
+            name="search"
             type="text"
             placeholder="Search"
             className="text-md w-full rounded-full bg-gray-200 px-4 py-1 outline-2 outline-gray-200 focus:bg-white"
@@ -94,11 +103,13 @@ const Chat = ({ user }) => {
                         color: currentTexter?.id == texter.id && "white",
                       }}
                     >
-                      {texter.latestMessage
-                        ? texter.latestMessage.author_id === texter.id
-                          ? texter.latestMessage.text
-                          : "You: " + texter.latestMessage.text
-                        : "Start a new chat!"}
+                      {clipText(
+                        texter.latestMessage
+                          ? texter.latestMessage.author_id === texter.id
+                            ? texter.latestMessage.text
+                            : "You: " + texter.latestMessage.text
+                          : "Start a new chat!",
+                      )}
                     </div>
                   </div>
                 </section>
