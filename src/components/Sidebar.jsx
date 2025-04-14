@@ -12,15 +12,15 @@ const Sidebar = ({ user, setShowSidebar }) => {
         className="absolute h-full w-full bg-gray-300/50"
         onClick={() => setShowSidebar(false)}
       ></div>
-      <section className="absolute z-10 h-full w-90 border-r-2 border-gray-200 bg-white text-lg">
-        <Link to="/profile">
+      <section className="absolute z-10 h-full w-60 border-r-2 border-gray-200 bg-white text-lg">
+        <Link to={`/profile/${user.id}`}>
           <div className="border-b-2 border-gray-200 p-4">
             <h1 className="text-2xl font-bold">{user.name}</h1>
             <div>{user.email}</div>
           </div>
         </Link>
         <Link
-          to="/profile"
+          to={`/profile/${user.id}`}
           className="flex cursor-pointer items-center gap-2 px-4 py-2 hover:bg-gray-200"
         >
           <MdiUser className="text-2xl" /> View Profile

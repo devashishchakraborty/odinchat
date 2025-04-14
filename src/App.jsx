@@ -1,12 +1,13 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
-import { useEffect, useState } from "react";
 import Chat from "./pages/Chat";
 import PageLoader from "./components/PageLoader";
+import Profile from "./pages/Profile";
 import "./App.css";
 
 function App() {
@@ -42,6 +43,11 @@ function App() {
           element={
             token ? user ? <Chat user={user} /> : <PageLoader /> : <Home />
           }
+        />
+        <Route
+          path="/profile/:userId"
+          
+          element={token ? user ? <Profile user={user} /> : <PageLoader /> : <Navigate to="/" />}
         />
         <Route
           path="/login"

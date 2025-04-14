@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import MdiChat from "../assets/MdiChat";
 
-const Header = ({ user = null }) => {
+const Header = () => {
   return (
     <>
       <header className="mb-4 border-b-2 border-b-gray-200 p-4 sm:px-16 xl:px-32">
@@ -13,20 +13,18 @@ const Header = ({ user = null }) => {
               </Link>
             </li>
           </ul>
-          {user || (
-            <ul className="flex gap-4 text-lg text-sky-500 sm:text-xl">
-              <li className="content-center">
-                <Link to="/login" className="hover:underline">
-                  Login
-                </Link>
-              </li>
-              <li className="content-center">
-                <Link to="/sign-up" className="hover:underline">
-                  Sign Up
-                </Link>
-              </li>
-            </ul>
-          )}
+          <ul className="flex gap-4 text-lg text-sky-500 sm:text-xl">
+            <li className="content-center">
+              <Link to="/login" className="hover:underline">
+                Login
+              </Link>
+            </li>
+            <li className="content-center">
+              <Link to="/sign-up" className="hover:underline">
+                Sign Up
+              </Link>
+            </li>
+          </ul>
         </nav>
       </header>
     </>
