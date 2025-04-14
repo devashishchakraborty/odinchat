@@ -68,7 +68,7 @@ const Chat = ({ user }) => {
             className="text-md w-full rounded-full bg-gray-200 px-4 py-1 outline-2 outline-gray-200 focus:bg-white"
           />
         </section>
-        <section className="flex flex-col">
+        <section className="flex flex-col overflow-auto">
           {users.length > 0 ? (
             users.map((texter) => {
               return (
