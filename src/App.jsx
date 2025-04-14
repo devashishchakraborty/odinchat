@@ -4,10 +4,10 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
-import "./App.css";
 import { useEffect, useState } from "react";
 import Chat from "./pages/Chat";
 import PageLoader from "./components/PageLoader";
+import "./App.css";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -39,7 +39,9 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={token ? user ? <Chat user={user} /> : <PageLoader /> : <Home />}
+          element={
+            token ? user ? <Chat user={user} /> : <PageLoader /> : <Home />
+          }
         />
         <Route
           path="/login"

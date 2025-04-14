@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import MdiSend from "../assets/MdiSend";
-import Loading from "./Loading";
 import MdiArrowBack from "../assets/MdiArrowBack";
-import socket from "../socket";
+import PageLoader from "./PageLoader";
+import { io } from "socket.io-client";
 
 const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
   const [messages, setMessages] = useState(null);
   const [error, setError] = useState(null);
   const [newMessage, setNewMessage] = useState("");
+  const socket = useRef(null);
 
   useEffect(() => {
     if (currentTexter) {
@@ -36,12 +37,20 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
       };
       fetchMessages();
 
-      socket.emit("join room", {
+      if (!socket.current) {
+        socket.current = io(import.meta.env.VITE_API_BASE_URL, {
+          auth: {
+            token: localStorage.getItem("token"),
+          },
+        });
+      }
+  
+      socket.current.emit("join room", {
         senderId: user.id,
         receiverId: currentTexter.id,
       });
 
-      socket.on("receive message", (data) => {
+      socket.current.on("receive message", (data) => {
         setMessages((prev) => [data, ...prev]);
         setUsers((prev) =>
           prev.map((user) =>
@@ -52,18 +61,22 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
         );
       });
 
-      socket.on("connect_error", (err) => {
+      socket.current.on("connect_error", (err) => {
         console.error("Auth failed:", err.message);
       });
 
-      return () => socket.off("receive message");
+      return () => {
+        if (socket.current) {
+          socket.current.off("receive message");
+        }
+      };
     } else setMessages(null);
-  }, [user, currentTexter, setUsers]);
+  }, [user, currentTexter, setUsers, socket]);
 
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
-    if (newMessage.length > 0) {
-      socket.emit("send message", {
+    if (newMessage.length > 0 && socket.current) {
+      socket.current.emit("send message", {
         authorId: user.id,
         receiverId: currentTexter.id,
         text: newMessage,
@@ -93,23 +106,21 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
             </div>
           </section>
 
-          <section className="flex flex-1 flex-col-reverse gap-2 overflow-auto p-4">
+          <section className="flex flex-1 flex-col-reverse gap-2 overflow-auto p-4 md:px-10">
             {messages ? (
               messages.length > 0 &&
               messages.map((message) => {
                 return (
                   <div
                     key={message.id}
-                    className={`${message.author_id === user.id ? "self-end rounded-br-none bg-green-200" : "self-start rounded-bl-none bg-gray-200"} max-w-2/3 rounded-xl px-3 py-2 whitespace-pre-wrap`}
+                    className={`${message.author_id === user.id ? "self-end rounded-br-none bg-green-200" : "self-start rounded-bl-none bg-gray-200"} max-w-2/3 rounded-xl px-3 py-2 break-all whitespace-pre-wrap`}
                   >
                     {message.text}
                   </div>
                 );
               })
             ) : (
-              <div className="self-center">
-                <Loading />
-              </div>
+              <PageLoader />
             )}
             {error}
           </section>
@@ -117,20 +128,21 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
           <section>
             <form
               action="#"
-              className="relative flex"
+              className="relative flex gap-4 border-t-2 border-t-gray-200 p-4"
               onSubmit={handleMessageSubmit}
             >
               <textarea
-                className="flex-1 resize-none bg-gray-100 p-4 pr-20 outline-2 outline-gray-200 focus:bg-gray-50"
+                className="flex-1 resize-none rounded-sm bg-gray-100 p-2 outline-2 outline-gray-200 focus:bg-gray-50"
                 name="message"
                 id="message"
                 placeholder="Write your message here!"
                 value={newMessage}
+                rows="1"
                 onChange={(e) => setNewMessage(e.target.value)}
                 required
               ></textarea>
               <button
-                className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer rounded-full p-2 text-3xl text-sky-600 hover:bg-gray-200"
+                className="cursor-pointer rounded-full p-2 text-3xl text-sky-600 hover:bg-gray-200"
                 type="submit"
               >
                 <MdiSend />
