@@ -51,10 +51,12 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
       });
 
       socket.current.on("receive message", (data) => {
-        setMessages((prev) => [data, ...prev]);
+        if (currentTexter.id === data.author_id) {
+          setMessages((prev) => [data, ...prev]);
+        }
         setUsers((prev) =>
           prev.map((user) =>
-            user.id === currentTexter.id
+            user.id === data.author_id
               ? { ...user, latestMessage: data }
               : user,
           ),
