@@ -3,7 +3,7 @@
 This is the **frontend** of **OdinChat**, a real-time chat application built as part of [The Odin Project](https://www.theodinproject.com/) curriculum. It allows users to chat in real time, manage dms, and experience live interaction — all from a sleek, responsive interface.
 
 > 🔗 [Backend Repo](https://github.com/devashishchakraborty/odinchat-backend)  
-> 🌐 [Live Demo](https://your-live-url.com)
+> 🌐 [Live Demo](https://odinchat.pages.dev/)
 ---
 
 ## ✨ Features
