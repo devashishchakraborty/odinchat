@@ -125,7 +125,7 @@ function Profile({ user }) {
               <span className="text-xl font-bold">Country: </span>
               <span>
                 {profile ? (
-                  regionNames.of(profile.country) || (
+                  regionNames.of(profile.country || "IN") || (
                     <span className="text-lg text-gray-500">
                       Country not added!
                     </span>

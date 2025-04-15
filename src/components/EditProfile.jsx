@@ -68,6 +68,7 @@ const EditProfile = ({ profile, setIsEditingProfile }) => {
             id="bio"
             value={bio}
             onChange={(e) => setBio(e.target.value)}
+            required
           ></textarea>
         </section>
         <section className="flex items-center justify-between gap-2">
@@ -79,6 +80,7 @@ const EditProfile = ({ profile, setIsEditingProfile }) => {
             name="skills"
             value={skills}
             onChange={(e) => setSkills(e.target.value)}
+            required
           />
         </section>
         <section className="flex items-center gap-2">

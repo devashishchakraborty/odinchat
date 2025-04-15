@@ -44,7 +44,7 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
           },
         });
       }
-  
+
       socket.current.emit("join room", {
         senderId: user.id,
         receiverId: currentTexter.id,
@@ -110,12 +110,20 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
             {messages ? (
               messages.length > 0 &&
               messages.map((message) => {
+                const utcDate = new Date(message.created_at);
                 return (
                   <div
                     key={message.id}
                     className={`${message.author_id === user.id ? "self-end rounded-br-none bg-green-200" : "self-start rounded-bl-none bg-gray-200"} max-w-2/3 rounded-xl px-3 py-2 break-all whitespace-pre-wrap`}
                   >
-                    {message.text}
+                    <span className="text-lg">{message.text}</span>&nbsp;&nbsp;&nbsp;
+                    <span className="text-xs text-green-900">
+                      {utcDate.toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </span>
                   </div>
                 );
               })
