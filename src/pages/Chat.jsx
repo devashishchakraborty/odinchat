@@ -11,6 +11,13 @@ const Chat = ({ user }) => {
   const [error, setError] = useState(null);
   const [currentTexter, setCurrentTexter] = useState(null);
   const [showSidebar, setShowSidebar] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(query.toLowerCase()) ||
+    user.email.toLowerCase().includes(query.toLowerCase())
+  );
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -65,12 +72,14 @@ const Chat = ({ user }) => {
             name="search"
             type="text"
             placeholder="Search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             className="text-md w-full rounded-full bg-gray-200 px-4 py-1 outline-2 outline-gray-200 focus:bg-white"
           />
         </section>
         <section className="flex flex-col overflow-auto">
-          {users.length > 0 ? (
-            users.map((texter) => {
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map((texter) => {
               return (
                 <section
                   className="flex cursor-pointer items-center gap-4 border-b-2 border-b-gray-200 px-4 py-2 hover:bg-gray-200"
