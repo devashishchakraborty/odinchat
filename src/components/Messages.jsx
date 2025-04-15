@@ -56,7 +56,7 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
         }
         setUsers((prev) =>
           prev.map((user) =>
-            user.id === data.author_id || currentTexter.id === data.author_id
+            user.id === data.author_id || user.id === data.receiver_id
               ? { ...user, latestMessage: data }
               : user,
           ),
