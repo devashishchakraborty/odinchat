@@ -88,6 +88,17 @@ const Login = ({ setToken }) => {
             >
               {isSubmitting ? <Loading /> : "Login"}
             </button>
+            <button
+              type="button"
+              className="flex cursor-pointer justify-center rounded-sm bg-gray-500 p-4 text-white hover:bg-gray-600"
+              disabled={isSubmitting}
+              onClick={() =>
+                setUserLogin({ email: "guest@email.com", password: "guest" })
+              }
+            >
+              Fill Guest Info
+            </button>
+
             <div>
               Don't have an account?{" "}
               <Link className="text-sky-600 hover:underline" to="/sign-up">
