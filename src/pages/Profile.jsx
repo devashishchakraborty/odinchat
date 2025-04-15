@@ -97,7 +97,7 @@ function Profile({ user }) {
                   <div>{profile.user.email}</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">Bio:</div>
+                  <div className="text-xl font-bold">Bio:</div>
                   <div>
                     {profile.bio || (
                       <span className="text-lg text-gray-500">
@@ -107,7 +107,7 @@ function Profile({ user }) {
                   </div>
                 </div>
                 <div>
-                  <span className="text-2xl font-bold">Skills: </span>
+                  <span className="text-xl font-bold">Skills: </span>
                   <span>
                     {profile.skills || (
                       <span className="text-lg text-gray-500">
