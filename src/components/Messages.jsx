@@ -11,6 +11,13 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
   const [newMessage, setNewMessage] = useState("");
   const socket = useRef(null);
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleMessageSubmit();
+    }
+  };
+
   useEffect(() => {
     if (currentTexter) {
       const fetchMessages = async () => {
@@ -76,7 +83,7 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
   }, [user, currentTexter, setUsers, socket]);
 
   const handleMessageSubmit = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     if (newMessage.length > 0 && socket.current) {
       socket.current.emit("send message", {
         authorId: user.id,
@@ -114,11 +121,12 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
                 return (
                   <div
                     key={message.id}
-                    className={`${message.author_id === user.id ? "self-end rounded-br-none bg-green-200" : "self-start rounded-bl-none bg-gray-200"} max-w-2/3 rounded-xl px-3 py-2 break-all whitespace-pre-wrap`}
+                    className={`${message.author_id === user.id ? "self-end rounded-br-none bg-green-200" : "self-start rounded-bl-none bg-gray-200"} max-w-2/3 rounded-xl px-3 py-2`}
                   >
-                    <span className="text-md md:text-lg">{message.text}</span>
-                    &nbsp;&nbsp;&nbsp;
-                    <span className="text-xs text-green-900">
+                    <span className="text-md break-all whitespace-pre-wrap md:text-lg">
+                      {message.text}
+                    </span>
+                    <span className="float-right mt-2 ml-2 min-w-max text-xs text-green-900 sm:mt-2.5">
                       {utcDate.toLocaleTimeString("en-US", {
                         hour: "numeric",
                         minute: "2-digit",
@@ -148,6 +156,7 @@ const Messages = ({ currentTexter, user, setUsers, setCurrentTexter }) => {
                 value={newMessage}
                 rows="1"
                 onChange={(e) => setNewMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
                 required
               ></textarea>
               <button
